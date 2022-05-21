@@ -1,0 +1,19 @@
+@import 'reset.css';
+@import 'tickerList.scss';
+@import 'mixins.scss';
+@import 'header.scss';
+
+.layout {
+  width: 1366px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.App {
+  .ticker-list {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 150px;
+  }
+}
