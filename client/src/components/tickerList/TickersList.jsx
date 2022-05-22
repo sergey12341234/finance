@@ -47,7 +47,7 @@ const TickersList = ({tickers, updateTicker, followListAdd, followListRemove, mo
                     <h2>Follow Board</h2>
                     <ul>
                         {
-                            followList.length ? tickers.filter(item => followList.includes(item.ticker)).map(item => <CTicketListItem key={item.ticker} ticker={item} />) : 'nothing in follows'
+                            followList.length ? tickers.map(item => followList.includes(item.ticker) ? <CTicketListItem key={item.ticker} ticker={item}/> : null) : 'nothing in follows'
                         }
                     </ul>
                 </div>

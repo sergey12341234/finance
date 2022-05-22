@@ -6,10 +6,8 @@ const Chart = ({ activeTicker, data }) => {
     const [chartData, setChartData] = useState([]); 
     useEffect(() => {
         if (data) {
-            let i = 0
-            setChartData([...(data.map(item => {
-                i++
-                return {name: i, [activeTicker]: item}
+            setChartData([...(data.map((item,index) => {
+                return {name: index + 1, [activeTicker]: item}
             }))])
         }
     },[data, activeTicker])
