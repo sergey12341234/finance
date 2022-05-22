@@ -9,7 +9,7 @@ const Header = () => {
                 <li><Link to='/follows'>FOLLOW</Link></li>
             </ul>
         </header>
-    )
-}
+    );
+};
 
 export {Header};

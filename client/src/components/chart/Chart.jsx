@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 const Chart = ({ activeTicker, data }) => {
     const [chartData, setChartData] = useState([]); 
     useEffect(() => {
         if (data) {
             setChartData([...(data.map((item,index) => {
-                return {name: index + 1, [activeTicker]: item}
-            }))])
+                return {name: index, [activeTicker]: item};
+            }))]);
         }
-    },[data, activeTicker])
+    },[data, activeTicker]);
     if(!activeTicker) {
         return (
             <h2>Select ticker</h2>
-        )
+        );
     } else {
         return (
             <div className='chat-wrapper'>

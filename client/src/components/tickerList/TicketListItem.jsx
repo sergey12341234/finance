@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { actionRemoveTickersPrice, actionSetTickerToChart, actionUpdateTickersPrice } from '../../store/store';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -8,20 +8,20 @@ function TicketListItem({ ticker, updatePrice, reduxState, removeFirstItem, foll
     const [changeCost, setChangeCost] = useState();
     const [changeCostPercent, setChangePercent] = useState();
     useEffect(() => {
-        updatePrice(ticker.ticker,ticker.price)
+        updatePrice(ticker.ticker,ticker.price);
     },[ticker, updatePrice]);
 
     useEffect(() => {
         if(reduxState[ticker.ticker]?.length > 1) {
             if(reduxState[ticker?.ticker].length > 10) removeFirstItem(ticker.ticker);
             setChangeCost((reduxState[ticker?.ticker][reduxState[ticker?.ticker].length - 1] - reduxState[ticker?.ticker][reduxState[ticker?.ticker].length - 2]).toFixed(2));
-            setChangePercent(((changeCost * 100) / reduxState[ticker?.ticker][reduxState[ticker?.ticker].length - 2]).toFixed(2))
+            setChangePercent(((changeCost * 100) / reduxState[ticker?.ticker][reduxState[ticker?.ticker].length - 2]).toFixed(2));
         }
-    }, [changeCost, reduxState, removeFirstItem, ticker.ticker])
+    }, [changeCost, reduxState, removeFirstItem, ticker.ticker]);
     return (
         <li
-        className={ticker.ticker === reduxState.chartTicker ? 'active' : null}
-        onClick={() => tickerToChart(ticker.ticker)}
+            className={ticker.ticker === reduxState.chartTicker ? 'active' : null}
+            onClick={() => tickerToChart(ticker.ticker)}
         >
             <div className='ticker-name'>
                 {ticker.ticker}
@@ -37,18 +37,18 @@ function TicketListItem({ ticker, updatePrice, reduxState, removeFirstItem, foll
             </div>
             <div className={'ticker-ToFollow'}>
                 <AddCircleIcon
-                onClick={(e) => {
-                    e.stopPropagation()
-                    followList.includes(ticker.ticker) ? followListRemove(ticker.ticker) : followListAdd(ticker.ticker)
-                }}
-                className={followList.includes(ticker.ticker) ? 'active': ''}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        followList.includes(ticker.ticker) ? followListRemove(ticker.ticker) : followListAdd(ticker.ticker);
+                    }}
+                    className={followList.includes(ticker.ticker) ? 'active': ''}
                 />
             </div>
         </li>
-    )
+    );
 }
 
-export const CTicketListItem = connect(state => ({ reduxState: state?.tickers || {}, followList: state?.follows?.followList || [] }),
+export const CTickerListItem = connect(state => ({ reduxState: state?.tickers || {}, followList: state?.follows?.followList || [] }),
     { 
         updatePrice: actionUpdateTickersPrice,
         removeFirstItem: actionRemoveTickersPrice,
