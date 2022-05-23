@@ -42,7 +42,7 @@ export const tickerReducer = (state = {}, { type, name, data, }) => {
     }
 
     return state;
-}
+};
 
 export const followReducer =  (state = {}, { type, name, ticker}) => {
     if(type === 'ADD_TO_FOLLOW') {
@@ -58,10 +58,10 @@ export const followReducer =  (state = {}, { type, name, ticker}) => {
         };
     }
     return state || {};
-}
+};
 
 export const store = createStore(combineReducers({
     tickers: tickerReducer,
     follows: followReducer
 }), applyMiddleware(thunk));
-store.subscribe(() => console.log(store.getState()));
+// store.subscribe(() => console.log(store.getState()));

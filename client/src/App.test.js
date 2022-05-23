@@ -1,26 +1,25 @@
 import React from 'react';
 import { CTickerList } from './components/tickerList/TickersList';
 import { CTickerListItem } from './components/tickerList/TicketListItem';
-import { getByText, render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from './App';
 import { combineReducers, createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { tickerReducer, followReducer } from './store/store'
-import userEvent from '@testing-library/user-event'
+import { tickerReducer, followReducer } from './store/store';
 describe('App', () => {
     it('render App component', () => {
         render(<App />);
         // screen.debug();
         expect(screen.getByText(/main/i)).toBeInTheDocument();
-    })
-})
+    });
+});
 
 const renderWithRedux = (component, { initialState, store = createStore(combineReducers({ tickers: tickerReducer, follows: followReducer }),initialState) } = {} ) => {
     return {
         ...render(<Provider store={store}>{ component }</Provider>),
         store
-    }
-}
+    };
+};
 
 describe('TickersList', () => {
 
@@ -40,11 +39,11 @@ describe('TickersList', () => {
                 }
             },
             follows: {
-                followList: ["AAL", 'GOOGLE']
+                followList: ['AAL', 'GOOGLE']
             }
         });
-        expect(getByRole('heading')).toHaveTextContent(/finance board/i)
-    })
+        expect(getByRole('heading')).toHaveTextContent(/finance board/i);
+    });
 
     //need to comment line 37 in TickersList.jsx
     it('render with follow mode', () => {
@@ -58,17 +57,17 @@ describe('TickersList', () => {
                 }
             },
             follows: {
-                followList: ["AAL", 'GOOGLE']
+                followList: ['AAL', 'GOOGLE']
             }
         });
-        expect(getByRole('heading')).toHaveTextContent(/follow board/i)
-    })
-})
+        expect(getByRole('heading')).toHaveTextContent(/follow board/i);
+    });
+});
 
 describe('TickerListItem', () => [
 
     it('render', () => {
-        const { getByRole, getByText } = renderWithRedux(<CTickerListItem  ticker={{ ticker: 'AAPL', exchange: 'NASDAQ', price: '156.35', change: '50.33', change_percent: '0.19'} }/>, { 
+        const { getByText } = renderWithRedux(<CTickerListItem  ticker={{ ticker: 'AAPL', exchange: 'NASDAQ', price: '156.35', change: '50.33', change_percent: '0.19'} }/>, { 
             tickers: {
                 AAPL: ['216.84', '278.18', '242.37', '250.78', '250.78', '132.53'],
                 AMZN: ['211.26', '202.00', '260.73', '226.03'],
@@ -80,12 +79,12 @@ describe('TickerListItem', () => [
                 }
             },
             follows: {
-                followList: ["AAL", 'GOOGLE']
+                followList: ['AAL', 'GOOGLE']
             }
         });
-        expect(getByText(/156/i)).toBeInTheDocument()
+        expect(getByText(/156/i)).toBeInTheDocument();
     })
-])
+]);
 
 
 

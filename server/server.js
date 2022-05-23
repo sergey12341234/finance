@@ -42,18 +42,22 @@ function getQuotes(socket) {
   socket.emit('ticker', quotes);
 }
 
-function trackTickers(socket) {
+function trackTickers(socket, changeInterval = FETCH_INTERVAL) {
   // run the first time immediately
   getQuotes(socket);
 
   // every N seconds
   const timer = setInterval(function() {
     getQuotes(socket);
-  }, FETCH_INTERVAL);
+  }, changeInterval);
+
+  socket.on('changeInterval', function(newInterval) {
+    clearInterval(timer)
+  });
 
   socket.on('disconnect', function() {
     clearInterval(timer);
-  });
+  }); 
 }
 
 const app = express();
@@ -74,6 +78,9 @@ socketServer.on('connection', (socket) => {
   socket.on('start', () => {
     trackTickers(socket);
   });
+  socket.on('changeInterval', (newInterval) => {
+    trackTickers(socket, newInterval)
+  })
 });
 
 server.listen(PORT, () => {

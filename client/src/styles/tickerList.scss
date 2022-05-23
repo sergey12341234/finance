@@ -75,12 +75,18 @@
                     }
                 }
             }
-            button {
-                height: 50px;
-                @include fontMixin;
-                color: white;
-                font-size: 16px;
+            .tools {
+                display: flex;
                 margin-top: 40px;
+                align-items: center;
+                button {
+                    height: 50px;
+                    @include fontMixin;
+                    color: white;
+                    font-size: 16px;
+                    margin-right: 40px;
+                }
+
             }
         }
         .ticker-chart {

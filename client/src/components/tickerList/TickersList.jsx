@@ -6,17 +6,20 @@ import { actionRemoveTickerFromChart, actionUpdateTickers } from '../../store/st
 import { CTickerListItem } from './TicketListItem';
 import { CChart } from '../chart/Chart';
 import { Button } from '@mui/material';
+import MySelect from '../UI/MySelect';
 const socket = io('http://localhost:4000');
 socket.emit('start');
 
 const TickersList = ({ tickers, updateTicker, mode = 'finance-board', followList, removeActiveTicker }) => {
+    const changeInterval = (value) => {
+        socket.emit('changeInterval', value);
+    };
+
     useEffect(() => {
         socket.on('ticker', payload => {
             updateTicker({ payload });
         });
     },[]);
-
-
 
     if (mode === 'finance-board') {
         return (
@@ -28,10 +31,16 @@ const TickersList = ({ tickers, updateTicker, mode = 'finance-board', followList
                             tickers.map(item => <CTickerListItem key={item.ticker} ticker={item} />)
                         }
                     </ul>
+                    <div className='tools'>
                     <Button
                         variant='contained'
                         color='error'
-                        onClick={() => removeActiveTicker()}>Delete active ticker</Button>
+                        onClick={() => removeActiveTicker()}
+                        >
+                            Delete active ticker
+                    </Button>
+                    <MySelect changeInterval={changeInterval} className='custom-select'/>
+                    </div>
                 </div>
                 <div className='ticker-chart'>
                     <CChart />
@@ -39,7 +48,6 @@ const TickersList = ({ tickers, updateTicker, mode = 'finance-board', followList
             </div>
         );
     } else if (mode === 'follow-board') {
-        console.log(followList);
         return (
             <div className='ticker-wrapper follow'>
                 <div className='ticker-board'>
