@@ -23,7 +23,7 @@ const renderWithRedux = (component, { initialState, store = createStore(combineR
 
 describe('TickersList', () => {
 
-    //need to comment line 37 in TickersList.jsx
+    //need to comment line 46 in TickersList.jsx!!!!!!
     it('render with finance mode', () => {
         const { getByRole } = renderWithRedux(<CTickerList ticker={{ticker: 'AAPL', exchange: 'NASDAQ', price: '156.35', change: '50.33', change_percent: '0.19'}}/>, { 
             tickers: {
@@ -45,7 +45,7 @@ describe('TickersList', () => {
         expect(getByRole('heading')).toHaveTextContent(/finance board/i);
     });
 
-    //need to comment line 37 in TickersList.jsx
+    //need to comment line 46 in TickersList.jsx!!!!!!!
     it('render with follow mode', () => {
         const { getByRole } = renderWithRedux(<CTickerList mode='follow-board'/>, { 
             tickers: {
@@ -62,11 +62,8 @@ describe('TickersList', () => {
         });
         expect(getByRole('heading')).toHaveTextContent(/follow board/i);
     });
-});
 
-describe('TickerListItem', () => [
-
-    it('render', () => {
+    void it('render TIckerListItem', () => {
         const { getByText } = renderWithRedux(<CTickerListItem  ticker={{ ticker: 'AAPL', exchange: 'NASDAQ', price: '156.35', change: '50.33', change_percent: '0.19'} }/>, { 
             tickers: {
                 AAPL: ['216.84', '278.18', '242.37', '250.78', '250.78', '132.53'],
@@ -83,8 +80,9 @@ describe('TickerListItem', () => [
             }
         });
         expect(getByText(/156/i)).toBeInTheDocument();
-    })
-]);
+    });
+});
+
 
 
 
