@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
-const Chart = ({ activeTicker, data }) => {
+const Chart = () => {
     const [chartData, setChartData] = useState([]); 
+    const activeTicker = useSelector(state => state?.tickers?.chartTicker || '');
+    const data = useSelector(state => state?.tickers[state?.tickers?.chartTicker]);
     useEffect(() => {
         if (data) {
             setChartData([...(data.map((item,index) => {
                 return {name: index, [activeTicker]: item};
             }))]);
         }
-    },[data, activeTicker]);
+    },[data]);
     if(!activeTicker) {
         return (
             <h2>Select ticker</h2>
@@ -47,9 +49,3 @@ const Chart = ({ activeTicker, data }) => {
 };
 
 export {Chart};
-export const CChart = connect(state => ({activeTicker: state?.tickers?.chartTicker || '', data: state?.tickers[state?.tickers?.chartTicker] || []}))(Chart);
-
-
-
-
-

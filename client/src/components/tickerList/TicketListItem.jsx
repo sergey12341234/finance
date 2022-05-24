@@ -1,15 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { actionRemoveTickersPrice, actionSetTickerToChart, actionUpdateTickersPrice } from '../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionRemoveTickersPrice, actionThunkExampleSetTickerToChart, actionUpdateTickersPrice, actionRemoveTickerFromFollow, actionAddTickerToFollow } from '../../store/actions';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { actionAddTickerToFollow, actionRemoveTickerFromFollow } from '../../store/store';
 
-function TicketListItem({ ticker, updatePrice, reduxState, removeFirstItem, followList, followListAdd, followListRemove, tickerToChart}) {
+export const TickerListItem = ({ ticker }) => {
     const [changeCost, setChangeCost] = useState();
     const [changeCostPercent, setChangePercent] = useState();
+    const reduxState = useSelector(state => state?.tickers || {});
+    const followList = useSelector(state => state?.follows?.followList || []);
+    const dispatch = useDispatch();
+    const updatePrice = (ticker,price) => {
+        dispatch(actionUpdateTickersPrice(ticker,price));
+    };
+
+    const removeFirstItem = (ticker) => {
+        dispatch(actionRemoveTickersPrice(ticker));
+    };
+
+    const followListAdd = (ticker) => {
+        dispatch(actionAddTickerToFollow(ticker));
+    };
+
+    const followListRemove = (ticker) => {
+        dispatch(actionRemoveTickerFromFollow(ticker));
+    };
+
+    const tickerToChart = (ticker) => {
+        dispatch(actionThunkExampleSetTickerToChart(ticker));
+    };
+
     useEffect(() => {
         updatePrice(ticker.ticker,ticker.price);
-    },[ticker, updatePrice]);
+    },[ticker]);
 
     useEffect(() => {
         if(reduxState[ticker.ticker]?.length > 1) {
@@ -46,13 +68,4 @@ function TicketListItem({ ticker, updatePrice, reduxState, removeFirstItem, foll
             </div>
         </li>
     );
-}
-
-export const CTickerListItem = connect(state => ({ reduxState: state?.tickers || {}, followList: state?.follows?.followList || [] }),
-    { 
-        updatePrice: actionUpdateTickersPrice,
-        removeFirstItem: actionRemoveTickersPrice,
-        followListAdd: actionAddTickerToFollow,
-        followListRemove: actionRemoveTickerFromFollow,
-        tickerToChart: actionSetTickerToChart,
-    })(TicketListItem);
+};

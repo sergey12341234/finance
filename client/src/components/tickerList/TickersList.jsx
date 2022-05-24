@@ -1,25 +1,24 @@
 import React from 'react';
-import { io } from 'socket.io-client';
-import { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { actionRemoveTickerFromChart, actionUpdateTickers } from '../../store/store';
-import { CTickerListItem } from './TicketListItem';
-import { CChart } from '../chart/Chart';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionRemoveTickerFromChart } from '../../store/actions';
+import { TickerListItem } from './TicketListItem';
+import { Chart } from '../chart/Chart';
 import { Button } from '@mui/material';
 import MySelect from '../UI/MySelect';
-const socket = io('http://localhost:4000');
-socket.emit('start');
+import { socket } from '../../socket/socket';
 
-const TickersList = ({ tickers, updateTicker, mode = 'finance-board', followList, removeActiveTicker }) => {
+
+export const TickersList = ({ mode = 'finance-board' }) => {
+    const dispatch = useDispatch();
+    const tickers = useSelector(state => state?.tickers?.UpdateStickers?.payload || []);
+    const followList = useSelector(state => state?.follows?.followList || []);
     const changeInterval = (value) => {
         socket.emit('changeInterval', value);
     };
 
-    useEffect(() => {
-        socket.on('ticker', payload => {
-            updateTicker({ payload });
-        });
-    },[]);
+    function removeActiveTicker () {
+        dispatch(actionRemoveTickerFromChart());
+    }
 
     if (mode === 'finance-board') {
         return (
@@ -28,7 +27,7 @@ const TickersList = ({ tickers, updateTicker, mode = 'finance-board', followList
                     <h2>Finance Board</h2>
                     <ul>
                         {
-                            tickers.map(item => <CTickerListItem key={item.ticker} ticker={item} />)
+                            tickers.map(item => <TickerListItem key={item.ticker} ticker={item} />)
                         }
                     </ul>
                     <div className='tools'>
@@ -43,7 +42,7 @@ const TickersList = ({ tickers, updateTicker, mode = 'finance-board', followList
                     </div>
                 </div>
                 <div className='ticker-chart'>
-                    <CChart />
+                    <Chart />
                 </div>
             </div>
         );
@@ -54,7 +53,7 @@ const TickersList = ({ tickers, updateTicker, mode = 'finance-board', followList
                     <h2>Follow Board</h2>
                     <ul>
                         {
-                            followList.length ? tickers.map(item => followList.includes(item.ticker) ? <CTickerListItem key={item.ticker} ticker={item}/> : null) : 'nothing in follows'
+                            followList.length ? tickers.map(item => followList.includes(item.ticker) ? <TickerListItem key={item.ticker} ticker={item}/> : null) : 'nothing in follows'
                         }
                     </ul>
                 </div>
@@ -64,6 +63,3 @@ const TickersList = ({ tickers, updateTicker, mode = 'finance-board', followList
         return null;
     }
 };
-
-export const CTickerList = connect(state => ({ tickers: state?.tickers?.UpdateStickers?.payload || [], followList: state?.follows?.followList || []}),
-    { updateTicker: actionUpdateTickers, removeActiveTicker: actionRemoveTickerFromChart })(TickersList);

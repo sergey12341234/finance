@@ -1,15 +1,14 @@
 import React from 'react';
-import { CTickerList } from './components/tickerList/TickersList';
-import { CTickerListItem } from './components/tickerList/TicketListItem';
+import { TickersList } from './components/tickerList/TickersList';
+import { TickerListItem } from './components/tickerList/TicketListItem';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 import { combineReducers, createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { tickerReducer, followReducer } from './store/store';
+import { tickerReducer, followReducer } from './store/reducers';
 describe('App', () => {
     it('render App component', () => {
         render(<App />);
-        // screen.debug();
         expect(screen.getByText(/main/i)).toBeInTheDocument();
     });
 });
@@ -23,9 +22,9 @@ const renderWithRedux = (component, { initialState, store = createStore(combineR
 
 describe('TickersList', () => {
 
-    //need to comment line 46 in TickersList.jsx!!!!!!
+    //need to comment line 45 in TickersList.jsx!!!!!!
     it('render with finance mode', () => {
-        const { getByRole } = renderWithRedux(<CTickerList ticker={{ticker: 'AAPL', exchange: 'NASDAQ', price: '156.35', change: '50.33', change_percent: '0.19'}}/>, { 
+        const { getByRole } = renderWithRedux(<TickersList ticker={{ticker: 'AAPL', exchange: 'NASDAQ', price: '156.35', change: '50.33', change_percent: '0.19'}}/>, { 
             tickers: {
                 UpdateStickers: {
                     payload: [
@@ -42,12 +41,13 @@ describe('TickersList', () => {
                 followList: ['AAL', 'GOOGLE']
             }
         });
-        expect(getByRole('heading')).toHaveTextContent(/finance board/i);
+        screen.debug();
+        expect(getByRole('heading')).toHaveTextContent(/Finance Board/i);
     });
 
-    //need to comment line 46 in TickersList.jsx!!!!!!!
+    //need to comment line 45 in TickersList.jsx!!!!!!!
     it('render with follow mode', () => {
-        const { getByRole } = renderWithRedux(<CTickerList mode='follow-board'/>, { 
+        const { getByRole } = renderWithRedux(<TickersList mode='follow-board'/>, { 
             tickers: {
                 UpdateStickers: {
                     payload: [
@@ -64,7 +64,7 @@ describe('TickersList', () => {
     });
 
     void it('render TIckerListItem', () => {
-        const { getByText } = renderWithRedux(<CTickerListItem  ticker={{ ticker: 'AAPL', exchange: 'NASDAQ', price: '156.35', change: '50.33', change_percent: '0.19'} }/>, { 
+        const { getByText } = renderWithRedux(<TickerListItem  ticker={{ ticker: 'AAPL', exchange: 'NASDAQ', price: '156.35', change: '50.33', change_percent: '0.19'} }/>, { 
             tickers: {
                 AAPL: ['216.84', '278.18', '242.37', '250.78', '250.78', '132.53'],
                 AMZN: ['211.26', '202.00', '260.73', '226.03'],

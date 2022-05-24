@@ -2,7 +2,7 @@ import './styles/App.scss';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import { CTickerList } from './components/tickerList/TickersList';
+import { TickersList } from './components/tickerList/TickersList';
 import { Router, Route, Switch } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import { Header } from './components/header/Header';
@@ -20,7 +20,7 @@ function App() {
                     <div className='layout'>
                         <div className='ticker-list'>
                             <Switch>
-                                <Route path='/' exact component={CTickerList}/>
+                                <Route path='/' exact component={TickersList}/>
                                 <Route path='/follows' exact component={FollowList}/>
                             </Switch>
                         </div>

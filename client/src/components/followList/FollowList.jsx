@@ -1,9 +1,9 @@
 import React from 'react';
-import { CTickerList } from '../tickerList/TickersList';
+import { TickersList } from '../tickerList/TickersList';
 
 const FollowList = () => {
     return (
-        <CTickerList mode='follow-board'/>
+        <TickersList mode='follow-board'/>
     );
 };
 
